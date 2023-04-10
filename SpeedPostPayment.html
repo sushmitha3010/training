@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://WWW.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/CSS/SpeedPostpayment.css}">
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}">
+
+</head>
+<body>
+ <div class="menu-bar">
+    <ul>
+    <ol class="active"><a th:href="@{/registeredPostModel}"><em class="fa-sharp fa-regular fa-paste"></em>&nbsp;Registered Post</a>
+           
+    </ol>
+    <ol><a th:href="@{/speedPostModel}"><em class="fa-sharp fa-regular fa-paste"></em><br>&nbsp;Speed Post</a></ol>
+
+     <ol><a th:href="@{/logout}"><em class="fa-sharp fa-solid fa-arrow-right-from-bracket"></em><br>Log Out</a></ol>
+     </ul>
+     </div><br><br>
+
+
+ 
+     <h1> Welcome To Payment !!!</h1>
+     <br><br>
+     <div class="main">
+     <div class="register">
+     <form id="recuringForm" th:action="@{/speedPayment}"  method="get" th:object="${speedPayment}" align="center">
+    
+     <br><br>
+     &nbsp; &nbsp; &nbsp;  <label>Sender Name:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="text" name="postSenderName" id="SenderName" th:value="${session.UserName}" readonly="readonly"  placeholder="SenderName" required />
+     <br><br>
+
+     &nbsp; &nbsp; &nbsp; <label>Amount:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="number" name="charge" id="Amount"  placeholder="Amount" th:value="${session.charge}" required />
+     <span id="amount-error"></span>
+     <br><br>
+					 
+               
+               
+     <button>Pay</button>
+     <button a th:href="@{/parcelDashBoard}">Back</a></button>
+  
+
+    
+  
+    
+</form>
+<script type= "text/Javascript" src= "/Javascript/DepositRegexValidation.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://WWW.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/CSS/RegisteredPost.css}">
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}">
+
+</head>
+<body>
+<div class="menu-bar">
+       <ul>
+       <ol class="active"><a th:href="@{/registeredPostModel}"><em class="fa-sharp fa-regular fa-paste"></em>&nbsp;Registered Post</a>
+       </ol>
+       <ol><a th:href="@{/speedPostModel}"><em class="fa-sharp fa-regular fa-paste"></em><br>&nbsp;Speed Post</a></ol>
+       <ol><a th:href="@{/logout}"><em class="fa-sharp fa-solid fa-arrow-right-from-bracket"></em><br>Log Out</a></ol>
+       </ul>
+       </div><br>
+       
+       
+       <h1>Welcome To Registered Post !!!</h1>
+       <div class="main">
+       <div class="register">
+
+
+     
+	
+	  <form id="parcelForm"  th:action="@{/registeredPost}" method="get" th:object="${registeredPost}" align="center">
+	
+	  &nbsp; &nbsp; &nbsp;  <label>Sender Name:</label>
+      <br>
+      &nbsp; &nbsp; &nbsp;  <input type="text" name="sendUserName" id="SenderName" th:value="${session.UserName}" readonly="readonly"  placeholder="SenderName" />
+      <br><br>
+             
+      &nbsp; &nbsp; &nbsp;<label>Sender Mobile Number:</label>
+      <br>
+      &nbsp; &nbsp; &nbsp;<input type="number" name="SendMobileNumber" id="SenderMobileNumber" th:field="*{sendUserMobileNo}" placeholder="SenderMobileNumber" onkeyup=" mobileNoValidation1()" required />
+      <div class="sendMob">
+      <span id="senderMobileNo-error"></span>
+      <br></div>
+
+      &nbsp; &nbsp; &nbsp; <label>Sender Address:</label>
+      <br>
+      &nbsp; &nbsp; &nbsp;<input type="text" name="SendAddress" id="SenderAddress" placeholder="SenderAddress" th:field="*{sendUserAddress}" onkeyup="addressValidation1()" required />
+      <div class="senderAddress">
+      <span id="senderAddress-error"></span>
+      <br></div>
+                
+       &nbsp; &nbsp; &nbsp;<label>Parcel Weight:</label>
+       <br>
+       &nbsp; &nbsp; &nbsp;<input type="number" name="ParcelWeight" id="ParcelWeight"  placeholder="ParcelWeight" onkeyup="parcelWeightValidation()" th:field="*{parcelWeight}" required />
+       <div class="weight">
+       <span id="weight-error"></span>
+       </div>
+       <br>
+    
+       &nbsp; &nbsp; &nbsp;  <label>Receiver Name:</label>
+       <br>
+       &nbsp; &nbsp; &nbsp;  <input type="text" name="ReceiverName" id="ReceiverName" placeholder="ReceiverName" th:field="*{receiveUserName}" onkeyup="regexValid()" required />
+       <div class="receiverName">
+       <span id="name-error"></span>
+       <br></div>
+
+                   
+       &nbsp; &nbsp; &nbsp;<label>Receiver Mobile Number:</label>
+       <br>
+       &nbsp; &nbsp; &nbsp;<input type="number" name="ReceiveMobileNumber" id="ReceiverMobileNumber" placeholder="ReceiverMobileNumber" th:field="*{receiveUserMobileNo}" onkeyup="mobileNoValidation2()" required />          
+       <div class="receiverMobile">
+       <span id="receiverMobileNo-error"></span>
+       <br></div>
+
+       &nbsp; &nbsp; &nbsp; <label>Receiver Address:</label>
+       <br>
+       &nbsp; &nbsp; &nbsp;<input type="text" name="ReceiveAddress" id="ReceiverAddress" placeholder="ReceiverAddress" th:field="*{receiveUserAddress}"  onkeyup="addressValidation2()" required />
+       <div class="receiverAddress">
+       <span id="receiverAddress-error"></span>
+       <br><br></div>
+       
+       	   <input  type="checkbox" required><button onclick="return calculate()">Calculate</button><br><br>
+       
+       
+        &nbsp; &nbsp; &nbsp; <label>Parcel Charge:</label>
+       <br>
+       &nbsp; &nbsp; &nbsp;<input type="number" name="ParcelCharge" id="parcelCharge" placeholder="parcelCharge" th:field="*{parcelCharge}" required /><br><br>
+ 
+                    
+		
+	   Are You Ready To Pay?&emsp;<input type="checkbox"><button type="submit">Payment</button>
+			
+	   
+	   <button a th:href="@{/parcelDashBoard}">Back</a></button>
+  
+    
+	   </form>
+
+
+	   <script type= "text/Javascript" th:src= "@{/Javascript/ParcelRegex.js}"></script>
+
+      
+       <script>
+
+     function calculate(){
+	 var a=parseInt(document.getElementById("ParcelWeight").value);
+	 var b=10;
+	 if (a < 0) {
+		 
+		 alert("The Parcel Weight Could Not Less Than Zero")
+			
+			}
+	 else{
+		 
+		 var parcelCharge=a*b;
+		 document.getElementById("parcelCharge").value=parcelCharge;
+		 return false;
+	 }
+}
+
+
+</script>
+
+
+</body>
+</html>

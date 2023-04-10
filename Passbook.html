@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="ISO-8859-1">
+
+<title>Recurring Deposit</title>
+
+<!-- slick grid start -->
+
+<link rel="stylesheet"
+
+th:href="@{/SlickGrid/css/smoothness/jquery-ui-1.8.16.custom.css}"
+
+type="text/css" />
+
+<link rel="stylesheet" th:href="@{/SlickGrid/slick.grid.css}"
+
+type="text/css" />
+
+<style>
+
+.slick-headerrow-column {
+
+background: #87ceeb;
+
+text-overflow: clip;
+
+-moz-box-sizing: border-box;
+
+box-sizing: border-box;
+
+}
+
+.slick-headerrow-column input {
+
+margin: 0;
+
+padding: 0;
+
+width: 100%;
+
+height: 100%;
+
+-moz-box-sizing: border-box;
+
+box-sizing: border-box;
+
+}
+
+</style>
+
+<!-- slick grid end -->
+
+</head>
+
+<body>
+
+<div style="position: relative; margin-top: 100px;">
+
+<div style="width: 1230px;">
+
+<div id="myGrid" style="width: 100%; height: 500px;"></div>
+
+</div>
+
+</div>
+
+<div th:attr="data-myvar=${RecurringDepositList}" id="myDiv"></div>
+
+<script th:src="@{/SlickGrid/lib/jquery-1.7.min.js}"></script>
+
+<script th:src="@{/SlickGrid/lib/jquery-ui-1.8.16.custom.min.js}"></script>
+
+<script th:src="@{/SlickGrid/lib/jquery.event.drag-2.2.js}"></script>
+
+<script th:src="@{/SlickGrid/slick.core.js}"></script>
+
+<script th:src="@{/SlickGrid/slick.dataview.js}"></script>
+
+<script th:src="@{/SlickGrid/slick.grid.js}"></script>
+
+<script th:inline="javascript">
+
+var dataView;
+
+var grid;
+
+var columnFilters = {};
+
+/*<![CDATA[*/
+
+var data = /*[[${recurringDepositList}]]*/'a';
+
+/*]]>*/
+
+console.log(data);
+
+/* set unique it to array */
+
+var nextId = 1;
+
+data.forEach(function(item) {
+
+// Generate a unique id using the nextId value
+
+var itemId = "item_" + nextId;
+
+// Set the id property of the item object
+
+item.id = itemId;
+
+// Increment the nextId value
+
+nextId++;
+
+});
+
+// Use the updated items array list with unique ids
+
+console.log(data);
+
+/* unique id end */
+function dateFormatter(row, cell, value, columnDef, dataContext) {
+		const date = new Date(value);
+		var getDay = date.toLocaleString("default", { day: "2-digit" });
+		var getMonth = date.toLocaleString("default", { month: "2-digit" });
+		var getYear = date.toLocaleString("default", { year: "numeric" }); // Set the desired date format
+		const formattedDate = getDay + "-" + getMonth + "-" + getYear;// Format the date as a string
+		return formattedDate; // Return the formatted date string
+	}
+
+var options = {
+
+enableCellNavigation : true,
+
+showHeaderRow : true,
+
+headerRowHeight : 30,
+
+explicitInitialization : true
+
+};
+
+var columnFilters = {};
+
+var columns = [ {
+
+id : "customerName",
+
+name : "user Name",
+
+field : "customerName",
+
+width : 150
+
+}, {
+
+id : "mobileNo",
+
+name : "Mobile Number",
+
+field : "mobileNo",
+
+width : 150
+
+}, {
+
+id : "accountNumber",
+
+name : "Account Number",
+
+field : "accountNumber",
+
+width : 150
+
+}, {
+
+	id : "principleAmount",
+
+	name : "Principle Amount",
+
+	field : "principleAmount",
+
+	width : 120
+	
+}, {
+
+	id : "noOfMonths",
+
+	name : "Number Of Months",
+
+	field : "noOfMonths",
+
+	width : 120
+	
+}, {
+
+	id : "depositDate",
+
+	name : "Deposit Date ",
+
+	field : "depositDate",
+	
+	formatter : dateFormatter,
+
+	width : 150
+	
+}, {
+
+	id : "amountReturnDate",
+
+	name : "Return Date ",
+
+	field : "amountReturnDate",
+	
+    formatter : dateFormatter,
+    
+	width : 140
+	
+},{
+	
+	id : "Interest",
+
+	name : "Interest",
+
+	field : "Interest",
+
+	width : 100
+	
+}, {
+
+
+
+	id : "maturityAmount",
+
+	name : "Maturity Amount",
+
+	field : "maturityAmount",
+
+	width : 150
+	
+}, {
+
+
+
+	id : "totalAmount",
+
+	name : "Total Amount",
+
+	field : "totalAmount",
+
+	width : 150
+	
+
+
+
+}, ];
+
+
+/* filter start */
+
+$(function() {
+
+function filter(item) {
+
+for ( var columnId in columnFilters) {
+
+if (columnId !== undefined
+
+&& columnFilters[columnId] !== "") {
+
+var c = grid.getColumns()[grid.getColumnIndex(columnId)];
+
+if (item[c.field] != columnFilters[columnId]) {
+
+return false;
+
+}
+
+}
+
+}
+
+return true;
+
+}
+
+/* filter end */
+
+dataView = new Slick.Data.DataView();
+
+grid = new Slick.Grid("#myGrid", dataView, columns, options);
+
+/* filter start */
+
+dataView.onRowCountChanged.subscribe(function(e, args) {
+
+grid.updateRowCount();
+
+grid.render();
+
+});
+
+dataView.onRowsChanged.subscribe(function(e, args) {
+
+grid.invalidateRows(args.rows);
+
+grid.render();
+
+});
+
+$(grid.getHeaderRow()).delegate(":input", "change keyup",
+
+function(e) {
+
+var columnId = $(this).data("columnId");
+
+if (columnId != null) {
+
+columnFilters[columnId] = $.trim($(this).val());
+
+dataView.refresh();
+
+}
+
+});
+
+grid.onHeaderRowCellRendered.subscribe(function(e, args) {
+
+$(args.node).empty();
+
+$("<input type='text'>").data("columnId", args.column.id).val(
+
+columnFilters[args.column.id]).appendTo(args.node);
+
+});
+
+grid.init();
+
+dataView.beginUpdate();
+
+dataView.setItems(data);
+
+dataView.setFilter(filter);
+
+dataView.endUpdate();
+
+})
+
+/* filter end */
+
+</script>
+
+<script th:inline="javascript">
+
+var dataView;
+
+var grid;
+
+var columnFilters = {};
+
+/*<![CDATA[*/
+
+var data = /*[[${timeDepositUsersList}]]*/'a';
+
+/*]]>*/
+
+console.log(data);
+
+/* set unique it to array */
+
+var nextId = 1;
+
+data.forEach(function(item) {
+
+// Generate a unique id using the nextId value
+
+var itemId = "item_" + nextId;
+
+// Set the id property of the item object
+
+item.id = itemId;
+
+// Increment the nextId value
+
+nextId++;
+
+});
+
+// Use the updated items array list with unique ids
+
+console.log(data);
+
+/* unique id end */
+
+var options = {
+
+enableCellNavigation : true,
+
+showHeaderRow : true,
+
+headerRowHeight : 30,
+
+explicitInitialization : true
+
+};
+
+var columnFilters = {};
+
+var columns = [ {
+
+id : "depositUserName",
+
+name : "User Name",
+
+field : "depositUserName",
+
+width : 150
+
+}, {
+
+id : "mobNo",
+
+name : "Mobile Number",
+
+field : "mobNo",
+
+width : 150
+
+}, {
+
+id : "acctNumber",
+
+name : "Account Number",
+
+field : "acctNumber",
+
+width : 150
+
+},{
+
+id : "initialAmount",
+
+name : "Amount",
+
+field : "initialAmount",
+
+width : 120
+
+}, {
+	id : "periods",
+
+	name : "Periods",
+
+	field : "periods",
+
+	width : 120
+},{
+	
+	id : "paymentDate",
+
+	name : "Deposit Date",
+
+	field : "paymentDate",
+	
+	formatter : dateFormatter,
+
+	width : 150
+
+},{
+	
+	id : "depsoitReturnDate",
+
+	name : "Return Date",
+
+	field : "depsoitReturnDate",
+
+	width : 120,
+	
+	formatter : dateFormatter
+	
+	
+},{
+	
+	id : "simple_interest",
+
+	name : "Simple Interest",
+
+	field : "simple_interest",
+
+	width : 120
+
+	}, {
+		id : "paymentMaturity",
+
+		name : "Maturity Amount",
+
+		field : "paymentMaturity",
+
+		width : 130
+	},{
+		
+		id : "totalPayment",
+
+		name : "Total Amount",
+
+		field : "totalPayment",
+
+		width : 130,
+		
+
+}, ] ;
+
+
+
+/* filter start */
+
+$(function() {
+
+function filter(item) {
+
+for ( var columnId in columnFilters) {
+
+if (columnId !== undefined
+
+&& columnFilters[columnId] !== "") {
+
+var c = grid.getColumns()[grid.getColumnIndex(columnId)];
+
+if (item[c.field] != columnFilters[columnId]) {
+
+return false;
+
+}
+
+}
+
+}
+
+return true;
+
+}
+
+/* filter end */
+
+dataView = new Slick.Data.DataView();
+
+grid = new Slick.Grid("#myGrid", dataView, columns, options);
+
+/* filter start */
+
+dataView.onRowCountChanged.subscribe(function(e, args) {
+
+grid.updateRowCount();
+
+grid.render();
+
+});
+
+dataView.onRowsChanged.subscribe(function(e, args) {
+
+grid.invalidateRows(args.rows);
+
+grid.render();
+
+});
+
+$(grid.getHeaderRow()).delegate(":input", "change keyup",
+
+function(e) {
+
+var columnId = $(this).data("columnId");
+
+if (columnId != null) {
+
+columnFilters[columnId] = $.trim($(this).val());
+
+dataView.refresh();
+
+}
+
+});
+
+grid.onHeaderRowCellRendered.subscribe(function(e, args) {
+
+$(args.node).empty();
+
+$("<input type='text'>").data("columnId", args.column.id).val(
+
+columnFilters[args.column.id]).appendTo(args.node);
+
+});
+
+grid.init();
+
+dataView.beginUpdate();
+
+dataView.setItems(data);
+
+dataView.setFilter(filter);
+
+dataView.endUpdate();
+
+})
+
+/* filter end */
+
+</script>
+
+<script th:inline="javascript">
+
+var dataView;
+
+var grid;
+
+var columnFilters = {};
+
+/*<![CDATA[*/
+
+var data = /*[[${SeniorUsersList}]]*/'a';
+
+/*]]>*/
+
+console.log(data);
+
+/* set unique it to array */
+
+var nextId = 1;
+
+data.forEach(function(item) {
+
+// Generate a unique id using the nextId value
+
+var itemId = "item_" + nextId;
+
+// Set the id property of the item object
+
+item.id = itemId;
+
+// Increment the nextId value
+
+nextId++;
+
+});
+
+// Use the updated items array list with unique ids
+
+console.log(data);
+
+/* unique id end */
+
+var options = {
+
+enableCellNavigation : true,
+
+showHeaderRow : true,
+
+headerRowHeight : 30,
+
+explicitInitialization : true
+
+};
+
+var columnFilters = {};
+
+var columns = [ {
+
+id : "accountHolderName",
+
+name : "User Name",
+
+field : "accountHolderName",
+
+width : 150
+
+}, {
+
+id : "mobNumber",
+
+name : "Mobile Number",
+
+field : "mobNumber",
+
+width : 140
+
+}, {
+
+id : "accountNum",
+
+name : "Account Number",
+
+field : "accountNum",
+
+width : 150
+
+},{
+	id : "money",
+
+	name : "Amount",
+
+	field : "money",
+
+	width : 90
+
+	}, {
+
+	id : "age",
+
+	name : "Age",
+
+	field : "age",
+
+	width : 60
+
+	}, {
+
+	id : "amountPaymentDate",
+
+	name : "Deposit Date",
+
+	field : "amountPaymentDate",
+	
+	formatter : dateFormatter,
+
+	width : 140
+	
+	}, {
+
+		id : "amountreDate",
+
+		name : "Return Date",
+
+		field : "amountReDate",
+		
+		formatter : dateFormatter ,
+		
+		width : 130
+
+	
+	},{
+		id : "interestAmount",
+
+		name : "Simple Interest",
+
+		field : "interestAmount",
+
+		width : 130
+
+		}, {
+
+		id : "maturity_amount",
+
+		name : "Maturity Amount",
+
+		field : "maturity_amount",
+
+		width : 120
+
+		}, {
+
+		id : "total_amount",
+
+		name : "Total Amount",
+
+		field : "total_amount",
+
+	width : 120,
+	
+
+}, ];
+
+
+/* filter start */
+
+$(function() {
+
+function filter(item) {
+
+for ( var columnId in columnFilters) {
+
+if (columnId !== undefined
+
+&& columnFilters[columnId] !== "") {
+
+var c = grid.getColumns()[grid.getColumnIndex(columnId)];
+
+if (item[c.field] != columnFilters[columnId]) {
+
+return false;
+
+}
+
+}
+
+}
+
+return true;
+
+}
+
+/* filter end */
+
+dataView = new Slick.Data.DataView();
+
+grid = new Slick.Grid("#myGrid", dataView, columns, options);
+
+/* filter start */
+
+dataView.onRowCountChanged.subscribe(function(e, args) {
+
+grid.updateRowCount();
+
+grid.render();
+
+});
+
+dataView.onRowsChanged.subscribe(function(e, args) {
+
+grid.invalidateRows(args.rows);
+
+grid.render();
+
+});
+
+$(grid.getHeaderRow()).delegate(":input", "change keyup",
+
+function(e) {
+
+var columnId = $(this).data("columnId");
+
+if (columnId != null) {
+
+columnFilters[columnId] = $.trim($(this).val());
+
+dataView.refresh();
+
+}
+
+});
+
+grid.onHeaderRowCellRendered.subscribe(function(e, args) {
+
+$(args.node).empty();
+
+$("<input type='text'>").data("columnId", args.column.id).val(
+
+columnFilters[args.column.id]).appendTo(args.node);
+
+});
+
+grid.init();
+
+dataView.beginUpdate();
+
+dataView.setItems(data);
+
+dataView.setFilter(filter);
+
+dataView.endUpdate();
+
+})
+
+/* filter end */
+
+</script>
+
+
+</body>
+
+</html>
+

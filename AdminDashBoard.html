@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dashboard</title>
+<meta charset="UTF-8">
+<script th:src="@{https://kit.fontawesome.com/853be5df50.js}" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/CSS/AdminDashBoard.css}">
+<link rel="stylesheet" th:href='@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href='@{https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css}'>
+</head>
+<body>
+<div class="sidebar">
+<ul class="nav-links">
+<li>
+<a href="#" class="active"> <em class='bx bx-grid-alt'></em><span>Dashboard </span></a>
+</li>
+
+<li>
+<a th:href="@{/listOfRegisterPostUser}"> <em class="fa fa-users"></em><span class="links_name">Registered Post List</span></a>
+</li>
+<li>
+<a th:href="@{/listOfSpeedPostUser}"> <em class='fa fa-users'></em><span class="links_name">Speed Post List</span></a>
+</li>
+<li>
+<a th:href="@{/listOfRecurringDepositUser}"> <em class="fa fa-users"></em><span class="links_name">Recurring Deposit List</span></a>
+</li>
+<li>
+<a th:href="@{/listOfTimeDepositUser}"> <em class="fa fa-users"></em><span class="links_name">Time Deposit List</span></a>
+</li>
+<li>
+<a th:href="@{/listOfSeniorCitizenDepositUser}"> <em class="fa fa-users"></em><span class="links_name">Senior Citizen List</span></a>
+</li>
+
+<li>
+<a th:href="@{/}"> <em class='fa fa-sign-out'></em><span class="links_name">Logout</span></a>
+</li>
+</ul>
+</div>
+    <section class="home-section">
+    <nav>
+    <div class="logo">
+<img th:src="@{/Image/PostOffice.jpg}" alt="logo">
+</div>
+    <div class="title">
+<h2>
+<span>&emsp;&emsp;Post Office<br>&emsp;&emsp;Management</span>
+</h2>
+</div>
+     
+    </nav>
+   
+    <div id="main">  
+        <div class="clearfix"></div>
+        <div class="col-div-3">
+            <div class="box">
+            <span><a th:href="@{/listOfRegisterPostUser}">Registered Post</a></span>
+              <strong></strong>  &emsp;&emsp;&emsp;<p th:text="${registered_count}"></p>
+          
+</div>
+        </div>
+        <div class="col-div-3">
+            <div class="box">
+            <span><a th:href="@{/listOfRecurringDepositUser}">RecurringDeposit</a></span>
+                <strong></strong>&emsp;&emsp;&emsp;<p th:text="${recurring_count}"></p>
+                
+            </div>
+        </div>
+        <div class="col-div-3">
+            <div class="box">
+            <span><a th:href="@{listOfTimeDepositUser}">Time Deposit</a></span>
+                <strong></strong>&emsp;&emsp;&emsp; <p th:text="${time_count}"></p>
+              
+            </div>
+        </div>
+        <div class="col-div-3">
+            <div class="box">
+            <span><a th:href="@{/listOfSeniorCitizenDepositUser}">Senior Citizen</a></span>
+               <strong></strong>&emsp;&emsp;&emsp; <p th:text="${senior_count}"></p>
+                
+            </div>
+        </div>
+        <div class="col-div-3">
+            <div class="box">
+            <span><a th:href="@{/listOfSpeedPostUser}">Speed Post</a></span>
+               <strong></strong> &emsp;&emsp;&emsp;<p th:text="${speed_count}"></p>
+    
+   </div>
+        </div>
+    </div>
+   </section>
+</body>
+</html>

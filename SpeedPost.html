@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://WWW.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<script th:src="@{/Javascript/Speed.js}"></script>
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/CSS/SpeedPost.css}">
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css}">
+
+</head>
+<body>
+<body>
+     <div class="menu-bar">
+
+     <ul>
+     <ol class="active"><a th:href="@{/registeredPostModel}"><em class="fa-sharp fa-regular fa-paste"></em>&nbsp;Registered Post</a> 
+     </ol>
+     <ol><a th:href="@{/speedPostModel}"><em class="fa-sharp fa-regular fa-paste"></em><br>&nbsp;Speed Post</a></ol>
+       
+           
+     <ol><a th:href="@{/logout}"><em class="fa-sharp fa-solid fa-arrow-right-from-bracket"></em><br>Log Out</a></ol>
+     </ul>
+     </div><br>
+     <h1>Welcome To Speed Post !!!</h1>
+     <div class="main">
+     <div class="register">
+
+     <br><br>
+
+    <form id="speedForm" name="form" th:action="@{/speedPost}"  method="get" th:object="${speedPost}" align="center">
+
+    
+     &nbsp; &nbsp; &nbsp;  <label>Sender Name:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;  <input type="text" name="SenderName" id="SenderName" th:value="${session.UserName}" readonly="readonly"  placeholder="SenderName" />
+     <br><br>
+
+                   
+     &nbsp; &nbsp; &nbsp;<label>Sender Mobile Number:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="number" name="SenderMobileNumber" id="SenderMobileNumber" th:field="*{senderMobileNo}" placeholder="SenderMobileNumber" onkeyup=" mobileNoValidation1()" required />
+     <div class="mob">
+     <span id="senderMobileNo-error"></span>
+     <br></div>
+
+     &nbsp; &nbsp; &nbsp; <label>Sender Address:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="text" name="SenderAddress" id="SenderAddress" th:field="*{senderAddress}" placeholder="SenderAddress"  onkeyup="addressValidation1()" required />
+     <div class="sendAddress">
+     <span id="senderAddress-error"></span>
+     <br></div>
+
+                  
+     &nbsp; &nbsp; &nbsp;<label>Kilometers:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="number" name="Kms" id="Kms" th:field="*{kms}" placeholder="Kms" onkeyup="kmsValidation()" required />
+     <div class="kms">
+     <span id="kms-error"></span>
+     </div>
+     <br>
+    
+     &nbsp; &nbsp; &nbsp;  <label>Receiver Name:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;  <input type="text" name="ReceiverName" id="ReceiverName" th:field="*{receiverName}" placeholder="ReceiverName" onkeyup="regexValid()" required />
+    <div class="sendName">
+     <span id="name-error"></span>
+     <br></div>
+
+                   
+     &nbsp; &nbsp; &nbsp;<label>Receiver MobileNumber:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="number" name="ReceiverMobileNumber" id="ReceiverMobileNumber" th:field="*{receiverMobileNo}" placeholder="ReceiverMobileNumber" onkeyup="mobileNoValidation2()" required />
+     <div class="recievermobile">
+     <span id="receiverMobileNo-error"></span>
+     <br></div>
+
+     &nbsp; &nbsp; &nbsp; <label>Receiver Address:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="text" name="ReceiverAddress" id="ReceiverAddress" th:field="*{receiverAddress}" placeholder="ReceiverAddress"  onkeyup="addressValidation2()" required />
+     <div class="receiverAddress">
+     <span id="receiverAddress-error"></span>
+     <br></div>
+               
+      <input type="checkbox" required><button type="submit" onclick="return Speedcalculation()">Calculate</button><br><br>
+  
+  
+      &nbsp; &nbsp; &nbsp; <label>Parcel Charge:</label>
+     <br>
+     &nbsp; &nbsp; &nbsp;<input type="number" name="ParcelCharge" id="parcelCharge" th:field="*{charge}" placeholder="ParcelCharge"  required /><br><br>
+                  
+    
+      Are You Ready To Pay?&emsp;<input type="checkbox" ><button type="submit" >Payment</button><br><br>
+    
+    <button a th:href="@{/parcelDashBoard}">Back</a></button>
+ 
+    </form>
+
+
+<script type= "text/Javascript" th:src= "@{/Javascript/ParcelRegex.js}"></script>
+   
+<script>
+
+function Speedcalculation(){
+var a=parseInt(document.getElementById("Kms").value);
+var b=6;
+ if(a < 0){
+	alert("Kms does not Enter Zero");
+}
+ else{
+	 
+	 var parcelCharge=a*b;
+	 document.getElementById("parcelCharge").value=parcelCharge;
+	 return false;
+ }
+
+
+}
+</script>
+
+</body>
+</html>

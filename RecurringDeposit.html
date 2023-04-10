@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://WWW.thymleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/CSS/Recurring.css}">
+</head>
+<body>
+<div class="menu-bar">
+	
+     <ul>   
+     <ol class="active"><a th:href="@{/recurring}"><em class="fa-solid fa-comments-dollar"></em>&nbsp;Recurring Deposit</a>
+        
+        
+        
+     </ol>
+     <ol><a th:href="@{/timeDepositModel}"><em class="fa-solid fa-comments-dollar"></em><br>&nbsp;Time Deposit</a></ol>
+     <ol><a th:href="@{/seniorCitizenModel}"><em class="fa-solid fa-comments-dollar"></em>&nbsp;SeniorCitizen Deposit</a>
+     </ol><br><br><br><br><br>
+          
+                
+     <ol><a th:href="@{/logout}"><em class="fa-sharp fa-solid fa-arrow-right-from-bracket"></i><br>Log Out</a></ol>             
+                
+     </ul>
+     </div><br>
+     <div class="recurring">
+    <img alt="" src="/Image/Recurring.jpg">
+     </div>
+            
+      <div class="header">          
+     <h1> Welcome To Recurring Deposit!!!</h1>
+      </div>
+     <div class="wrapper">
+
+	 <form id=recurringDeposit th:action="@{/recurringDeposit}"   method="get" th:object="${recurring}" align="center">
+      
+
+		<br><br>
+	 <div class="form-control">
+     <input type="text" name="deposituserName" id="UserName" th:value="${session.UserName}" readonly="readonly" />
+	 </div>
+		
+	 <div class="form-control">
+	<strong> <input type="number" name="depositUserMobileNo" id="MobileNumber"  placeholder="MobileNumber" onkeyup="mobileNoValidation()" required /></strong>
+     <div class=mobile>
+     <span id="mobileNo-error"></span>
+     </div>
+	 </div>
+		
+	 <div class="form-control"><strong>
+	 <input type="number" name="userAccountNumber" id="AccountNumber" readonly="readonly" th:value="${session.AccountNo}" placeholder="AccountNumber" onkeyup="accountNoValidation()" required />
+     <div class="accountNo">
+     <span id="accountNo-error"></span></strong>
+     </div>
+	 </div>
+		
+	 <div class="form-control">
+	 <input type="number" name="depositAmount"  id="PrincipleAmount" placeholder="PrincipleAmount" onkeyup="amountValidation1()" required />
+     <div class="principleAmount">
+     <span id="amount-error"></span>
+     </div>
+	 </div>
+		
+	 <div class="form-control">
+	 <input type="number" name="noOfMonths" id="NumberOfMonths"  placeholder="NumberOfMonths" onkeyup="monthValidation()" required />
+     <div class="month">
+     <span id="month-error"></span>
+     </div>
+	 </div>
+	 <div class="form-control">
+	 <input type="text" name=noOfMonthsToBePaid id="month" placeholder="No Of Months To Be Paid" th:value="${session.Count}" month to be paid>
+	 </div>
+
+     <input type="checkbox" required><button onclick="return calculate()">Calculate</button><br><br>      
+      
+     <div class="form-control">
+	 <input type="text" name="Interest" id="Interest" placeholder="Interest" required />
+     </div>
+     
+     <div class="form-control">
+	 <input type="number" name="maturityAMount" id="maturityAmount" placeholder="Maturity Amount"  required />   
+	 </div>
+     
+     
+     <div class="form-control">
+	 <input  type="text" name="totalAmount" id="totalAmount" placeholder="Total Amount" required />
+     </div>
+     
+     
+            
+        Are You Ready To Pay?&emsp;<input type="checkbox">&emsp;<button type="submit">Payment</button><br><br>
+       <button><a th:href="@{/depositDashBoard}">Back</a></button>
+                 
+                 
+      </form>
+      </div>
+     
+     <script type= "text/Javascript" th:src= "@{/Javascript/DepositRegexValidation.js}"></script>
+    
+      
+     <script>
+     count();
+function count(){
+	var month=document.getElementById("NumberOfMonths").Value;
+	var eMonth="[[${count}]]";
+	console.log(eMonth);
+}
+
+function calculate(){
+ var a=parseInt(document.getElementById("PrincipleAmount").value);
+ var b=parseInt(document.getElementById("NumberOfMonths").value);
+ var c= rateOfInterest = 5.8;
+
+ if (a < 0) {
+ 
+	}
+	
+else{
+	var Interest=a * b * (b + 1) * c / 2400;
+	document.getElementById("Interest").value=Interest;
+	
+	var maturityAmount=a*b;
+	document.getElementById("maturityAmount").value=maturityAmount;
+     
+	var totalAmount=   Interest+maturityAmount;
+	document.getElementById("totalAmount").value=totalAmount;
+	return false;
+	    }
+
+ return false;
+
+}
+</script>     
+
+</body>
+</html>
